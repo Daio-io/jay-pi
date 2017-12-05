@@ -1,0 +1,1 @@
+web: java -jar build/libs/Jay-Pi-1.0.jar
