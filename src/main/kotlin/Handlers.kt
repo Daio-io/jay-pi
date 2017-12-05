@@ -4,13 +4,21 @@ import org.json.JSONObject
 class Handlers(private val database: Database) {
 
     val recipeHandler = sparkHandler {
+        val ingredients = request.queryParams("ingredients")
+
         response.header("Content-Type", AppConstants.JSON_CONTENT)
+
+        val recipes = if (ingredients == null) {
+            database.getRecipes()
+        } else database.getRecipes().filter { it.ingredients.find { it.name.contains(ingredients, ignoreCase = true) } != null }
+
         val jsonArray = JSONArray()
-        database.getRecipes().forEach {
+        recipes.forEach {
             val item = JSONObject(it.toJson())
             jsonArray.put(item)
         }
-        JsonResult("success", jsonArray.toString()).toJson()
+
+        generateResponse("success", jsonArray.toString())
     }
 
     val statusHandler = sparkHandler {
@@ -20,14 +28,6 @@ class Handlers(private val database: Database) {
 
 }
 
-
-interface Model {
-    fun toJson(): String
-}
-
-class JsonResult(private val status: String, val res: String?) : Model {
-
-    override fun toJson(): String {
-        return res?.let { "{\"status\":\"$status\", \"result\": $res}" } ?: "{\"status\":\"failed\", \"text\":\"\"}"
-    }
+fun generateResponse(status: String, res: String?): String {
+    return res?.let { "{\"status\":\"$status\", \"result\": $res}" } ?: "{\"status\":\"failed\", \"result\":\"[]\"}"
 }
