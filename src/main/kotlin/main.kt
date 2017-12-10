@@ -6,5 +6,5 @@ fun main(args: Array<String>) {
     spark.port(AppConstants.PORT)
     spark.get("/status", function = handlers.statusHandler)
     spark.get("/recipes", function = handlers.recipeHandler)
-    spark.get("/save", function = handlers.saveHandler)
+    spark.post("/save", function = handlers.saveHandler)
 }
