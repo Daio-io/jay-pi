@@ -25,14 +25,14 @@ class Handlers(private val database: Database) {
     val saveHandler = sparkHandler {
         response.header("Content-Type", AppConstants.JSON_CONTENT)
         request.queryParams("apikey")?.takeIf { it == AppConstants.API_KEY }
-                ?: return@sparkHandler generateResponse("failed", "Invalid API KEY")
+                ?: return@sparkHandler generateResponse("failed", "\"Invalid API KEY\"")
 
         val body = request.body()
 
         val recipe = Recipe.fromJson(body)
 
         database.saveRecipe(recipe)
-        generateResponse("success", "Recipe added")
+        generateResponse("success", "\"Recipe added\"")
     }
 
     val statusHandler = sparkHandler {
@@ -43,5 +43,5 @@ class Handlers(private val database: Database) {
 }
 
 fun generateResponse(status: String, res: String?): String {
-    return res?.let { "{\"status\":\"$status\", \"result\": \"$res\"}" } ?: "{\"status\":\"failed\", \"result\":\"[]\"}"
+    return res?.let { "{\"status\":\"$status\", \"result\": $res}" } ?: "{\"status\":\"failed\", \"result\":\"[]\"}"
 }
