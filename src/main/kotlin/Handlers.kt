@@ -23,7 +23,8 @@ class Handlers(private val database: Database) {
     }
 
     val saveHandler = sparkHandler {
-        val key = request.queryParams("apikey")?.takeIf { it == AppConstants.API_KEY }
+        response.header("Content-Type", AppConstants.JSON_CONTENT)
+        request.queryParams("apikey")?.takeIf { it == AppConstants.API_KEY }
                 ?: return@sparkHandler generateResponse("failed", "Invalid API KEY")
 
         val body = request.body()
