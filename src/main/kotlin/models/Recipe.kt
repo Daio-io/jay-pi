@@ -22,6 +22,7 @@ data class Recipe(val title: String,
             val obj = JSONObject().apply {
                 put("amount", it.amount)
                 put("name", it.name)
+                put("type", it.type)
             }
             ingArray.put(obj)
         }

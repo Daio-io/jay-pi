@@ -9,6 +9,6 @@ object Database {
     private val db = MongoClient(connectionString).getDatabase(AppConstants.DATABASE_NAME)
     private val recipesCollection = db.getCollection("jrecipes")
 
-    fun getRecipes() = recipesCollection.find().mapIndexed { _, document -> Recipe.fromJson(document.toJson()) }
+    fun getRecipes() = recipesCollection.find().map { document -> Recipe.fromJson(document.toJson()) }
 
 }
