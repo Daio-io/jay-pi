@@ -1,6 +1,7 @@
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
 import models.Recipe
+import org.bson.Document
 
 
 object Database {
@@ -10,5 +11,9 @@ object Database {
     private val recipesCollection = db.getCollection("jrecipes")
 
     fun getRecipes() = recipesCollection.find().map { document -> Recipe.fromJson(document.toJson()) }
+
+    fun saveRecipe(recipe: Recipe) {
+        recipesCollection.insertOne(Document.parse(recipe.toJson()))
+    }
 
 }

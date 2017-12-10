@@ -1,3 +1,4 @@
+import models.Recipe
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -19,6 +20,18 @@ class Handlers(private val database: Database) {
         }
 
         generateResponse("success", jsonArray.toString())
+    }
+
+    val saveHandler = sparkHandler {
+        val key = request.queryParams("apikey")?.takeIf { it == AppConstants.API_KEY }
+                ?: return@sparkHandler generateResponse("failed", "Invalid API KEY")
+
+        val body = request.body()
+
+        val recipe = Recipe.fromJson(body)
+
+        database.saveRecipe(recipe)
+        generateResponse("success", "Recipe added")
     }
 
     val statusHandler = sparkHandler {
