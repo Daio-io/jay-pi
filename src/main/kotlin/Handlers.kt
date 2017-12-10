@@ -42,5 +42,5 @@ class Handlers(private val database: Database) {
 }
 
 fun generateResponse(status: String, res: String?): String {
-    return res?.let { "{\"status\":\"$status\", \"result\": $res}" } ?: "{\"status\":\"failed\", \"result\":\"[]\"}"
+    return res?.let { "{\"status\":\"$status\", \"result\": \"$res\"}" } ?: "{\"status\":\"failed\", \"result\":\"[]\"}"
 }
