@@ -52,12 +52,13 @@ data class Recipe(val title: String,
 }
 
 data class Ingredient(val amount: String,
-                      val name: String) {
+                      val name: String,
+                      val type: String) {
 
     companion object {
         fun fromJson(json: String): Ingredient {
             val obj = JSONObject(json)
-            return Ingredient(obj.optString("amount"), obj.getString("name"))
+            return Ingredient(obj.optString("amount"), obj.getString("name"), obj.getString("type"))
         }
     }
 }
