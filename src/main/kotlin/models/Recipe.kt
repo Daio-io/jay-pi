@@ -6,6 +6,7 @@ import org.json.JSONObject
 data class Recipe(val title: String,
                   val method: String,
                   val image: String,
+                  val group: String,
                   val ingredients: List<Ingredient>,
                   val time: String): Model {
 
@@ -13,6 +14,7 @@ data class Recipe(val title: String,
         val jsonRecip = JSONObject().apply {
             put("title", title)
             put("time", time)
+            put("group", group)
             put("method", method)
             put("image", image)
         }
@@ -36,6 +38,7 @@ data class Recipe(val title: String,
             val obj = JSONObject(json)
             val title = obj.getString("title")
             val method = obj.getString("method")
+            val group = obj.getString("group")
             val time = obj.getString("time")
             val image = obj.getString("image")
             val ingredients = obj.getJSONArray("ingredients")
@@ -45,7 +48,7 @@ data class Recipe(val title: String,
                 Ingredient.fromJson(ingJson)
             }
 
-            return Recipe(title, method, image, ings, time)
+            return Recipe(title, method, image, group, ings, time)
         }
     }
 
